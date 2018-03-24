@@ -1,0 +1,166 @@
+<html lang="en">
+<head>
+  <title>Sudoku</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
+</head>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.3/math.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
+<script src = '../js/sudoku_archive.js'></script>
+<script src = '../js/sudoku.js'></script>
+
+<script src = '../js/board.js'></script>
+<script src = '../js/color_rules.js'></script>
+<script src = '../js/buttons.js'></script>
+<script src = '../js/controls.js'></script>
+<script src = '../js/update.js'></script>
+
+<body>
+  <div class = 'fluid-container text-center'>
+    <h5 class = 'pt-3 text-secondary'>Sudoku</h5>
+    <svg id = 'canvas'></svg>
+  </div>
+</body>
+
+<script>
+
+Array.prototype.last = function(){
+  return this[ this.length-1 ]
+}
+
+// ************************************************************************************** //
+// Setup
+
+$(document).ready(function(){
+  create_data(9);
+  setup_canvas(500, 800);
+  createBoard();
+  createButtons();
+  createControls();
+
+  create_events_board();
+  create_events_controls();
+  create_events_buttons();
+
+  select_sudoku();
+  update();
+})
+
+// ************************************************************************************** //
+// Update
+
+function update(){
+  // if(settings.choices == true){ check_possible_values(); }
+  check_possible_values();
+  update_controls();
+
+  check_wrong_entries();
+  updateButtons();
+
+  assign_selected_to_cells();
+  assign_highlighted_to_cells();
+  create_color_rules();
+  update_Cells();
+  update_cells_possibilities();
+}
+
+// ************************************************************************************** //
+// Data variables for cells
+
+var num_cells = 9, sqrt_num_cells = Math.sqrt(num_cells);
+var data = {}, data_val = {};
+data.cells = []; data.rows = []; data.columns = []; data.squares = [];
+data_val.cells = []; data_val.rows = []; data_val.columns = []; data_val.squares = [];
+
+function create_data(num){
+  data.cells = []; data.rows = []; data.columns = []; data.squares = [];
+  data_val.cells = []; data_val.rows = []; data_val.columns = []; data_val.squares = [];
+  num_cells = num; sqrt_num_cells = Math.sqrt(num_cells);
+
+  var row, column, temp_x, temp_y, temp_square, temp_id, temp_object;
+  for(row = 0; row < num_cells; row++){
+    for(column = 0; column < num_cells; column++){
+      temp_x = parseInt(row/sqrt_num_cells);
+      temp_y = parseInt(column/sqrt_num_cells);
+      temp_square = temp_x*sqrt_num_cells + temp_y;
+      temp_id = row*num_cells + column;
+
+      temp_object = {
+        row: row, column: column, square: temp_square, id: temp_id, guesses: [],
+        fixed: false, value: null, selected: false, highlighted: false, conflict: false
+      };
+      data.cells.push(temp_object);
+      data_val.cells.push(null);
+    }
+  }
+}
+
+// ************************************************************************************** //
+// Other variables
+
+var settings = {};
+settings.highlight = false;
+settings.guess = false;
+settings.choices = false;
+
+var states = {};
+states.active_cell = null;
+states.highlight_val = null;
+
+var buttons = [];
+var controls = {};
+
+// ************************************************************************************** //
+// Setup Canvas
+
+var canvas_width = 500, canvas_height = 800;
+var canvas_size = 400;
+
+function setup_canvas(width, height){
+  canvas_width = width; canvas_height = height;
+  canvas_size = canvas_width - 100;
+
+  d3.select('#canvas').styles({ width: canvas_width, height: canvas_height });
+};
+
+// ************************************************************************************** //
+// Data Log
+
+var user_log = [];
+function push_data(){
+  var temp_data = data.cells.map(d => { return d.value });
+  user_log.push(temp_data);
+}
+
+function pop_data(){
+  if(user_log.length > 1){
+    user_log.pop(); assign_data();
+  }
+}
+
+function reset(){
+  while(user_log.length > 1){ user_log.pop(); }
+  assign_data();
+}
+
+function assign_data(){
+  var temp_data = user_log.last();
+  data.cells.forEach( (d,i) => { d.value = temp_data[i]; } )
+  current_active_cell = null; states.highlight_val = null;
+  update();
+}
+
+// ************************************************************************************** //
+
+</script>

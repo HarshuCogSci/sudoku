@@ -1,0 +1,28 @@
+SUDOKU
+
+Thoughts:
+- Solving sudoku as an interaction problem
+
+Computation
+  - Option to create a sudoku
+  - Dragging and dropping values into cells
+  - Changing rows into columns or squares, etc.
+  - Sudoku generation algorithm
+      -- https://www.codeproject.com/Articles/23206/Sudoku-Algorithm-Generates-a-Valid-Sudoku-in
+      -- https://gamedev.stackexchange.com/questions/56149/how-can-i-generate-sudoku-puzzles
+
+UI/UX
+  - Branching when guessed
+
+*************************************************************************************************
+
+Architecture:
+
+data => data.cells, data.rows, data.columns // Data corresponding to each cell
+data_val => data_val.cells, data_val.rows, data_val.columns // Data values corresponding to each cell
+
+settings => settings.highlight, settings.guess, settings.choices  // Settings governing user interaction
+states => states.active_cell, states.highlight_val  // Current selected values
+
+buttons => Array  // To store all the value buttons
+controls => controls.guess,
