@@ -1,8 +1,7 @@
 ## Introduction
 An interface to aid in solving Sudoku by providing visual cues and possible choices. The motivation behind the project was to understand how would the game play differ on paper vs an interactive interface.
 
-## How to open
-Download the repository and open the index.html file from the 'html' folder
+Access it at https://harshucogsci.github.io/sudoku/html/
 
 ## Features
 
