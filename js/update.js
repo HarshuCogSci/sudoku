@@ -130,5 +130,9 @@ function update_Cells(){
       if(temp == true){ for(d_ in node.color){ d[d_].styles(node.color[d_]); } }
     })
 
+    // if(d.fixed != true){
+    //   d.circle.attrs({ r: 0 }).transition().duration(250).attrs({ r: 0.5*box_size }).transition().duration(50).attrs({ r: 0.48*box_size });
+    // }
+
   })
 }

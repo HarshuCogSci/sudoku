@@ -1,8 +1,9 @@
 // ************************************************************************************** //
 // Preparing the board
 
+var box_size;
 function createBoard(){
-  var box_size = canvas_size/num_cells;
+  box_size = canvas_size/num_cells;
   d3.select('#sudoku_g').remove();
   var sudoku_g = d3.select('#canvas').append('g').attrs({ id: 'sudoku_g', transform: 'translate(' +50+ ',' +10+ ')' });
 

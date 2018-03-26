@@ -4,15 +4,19 @@ Thoughts:
 - Solving sudoku as an interaction problem
 
 Computation
-  - Option to create a sudoku
   - Dragging and dropping values into cells
   - Changing rows into columns or squares, etc.
+  - 16*16 version
   - Sudoku generation algorithm
       -- https://www.codeproject.com/Articles/23206/Sudoku-Algorithm-Generates-a-Valid-Sudoku-in
       -- https://gamedev.stackexchange.com/questions/56149/how-can-i-generate-sudoku-puzzles
 
 UI/UX
-  - Branching when guessed
+  - Mode for creating sudoku by user
+  - Ability to log the state of the board and coming back to it.
+  - Create help with gifs of recording | events
+  - Create options to change difficulty level via a panel like that in vector field
+  - Animation of circle changing radius
 
 *************************************************************************************************
 
